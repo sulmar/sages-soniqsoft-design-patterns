@@ -8,11 +8,11 @@ namespace SimpleFactoryPattern
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello Factory Method Pattern!");
+            Console.WriteLine("Hello Simple Factory Pattern!");
 
             VisitCalculateAmountTest();
 
-            PaymentTest();
+          //  PaymentTest();
         }
 
 
@@ -79,17 +79,11 @@ namespace SimpleFactoryPattern
                 {
                     TimeSpan duration = TimeSpan.FromMinutes(minutes);
 
-                    Visit visit = new Visit(duration, 100);
+                    Visit visit = VisitFactory.Create(visitType, duration, 100);
 
-                    decimal totalAmount = visit.CalculateCost(visitType);
+                    decimal totalAmount = visit.CalculateCost();
 
-                    if (totalAmount == 0)
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    else
-                       if (totalAmount >= 200)
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    else
-                        Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ColorFactory.Create(totalAmount);
 
                     Console.WriteLine($"Total amount {totalAmount:C2}");
 
