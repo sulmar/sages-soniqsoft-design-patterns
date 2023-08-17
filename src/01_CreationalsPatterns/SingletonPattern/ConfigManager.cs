@@ -11,7 +11,7 @@ namespace SingletonPattern
 
         private readonly Dictionary<string, object> settings = new Dictionary<string, object>();
 
-        private static object syncLock;
+        private static object syncLock = new();
 
         private static ConfigManager instance;
 
