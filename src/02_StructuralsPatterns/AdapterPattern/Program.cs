@@ -18,19 +18,15 @@ namespace AdapterPattern
 
         private static void MotorolaRadioTest()
         {
-            MotorolaRadio radio = new MotorolaRadio();
-            radio.PowerOn("1234");
-            radio.SelectChannel(10);
-            radio.Send("Hello World!");
-            radio.PowerOff();
+            IRadioAdapter radio = RadioAdapterFactory.Create("Motorola");
+            radio.SendMessage("Hello World!", 10);
         }
 
         private static void HyteraRadioTest()
         {
-            HyteraRadio radio = new HyteraRadio();
-            radio.Init();
-            radio.SendMessage(10, "Hello World!");
-            radio.Release();
+            IRadioAdapter radio = RadioAdapterFactory.Create("Hytera");           
+            radio.SendMessage("Hello World!", 10);
+            
         }
     }
 
