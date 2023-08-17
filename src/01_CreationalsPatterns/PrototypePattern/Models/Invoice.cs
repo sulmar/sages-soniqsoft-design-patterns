@@ -12,7 +12,7 @@ namespace PrototypePattern
         public decimal TotalAmount { get; set; }
     }
 
-    public class Invoice
+    public class Invoice : ICloneable
     {
         public Invoice(string number, DateTime createDate, Customer customer)
         {
@@ -40,9 +40,28 @@ namespace PrototypePattern
             }
         }
 
+        private Invoice Copy()
+        {
+            Invoice invoiceCopy = new Invoice(this.Number, this.CreateDate, this.Customer);
+
+            invoiceCopy.PaymentStatus = this.PaymentStatus;
+
+            return invoiceCopy;
+        }
+
         public override string ToString()
         {
             return $"Invoice No {Number} {TotalAmount:C2} {Customer.FullName}";
+        }
+
+        public object Clone()
+        {
+            // return Copy();
+
+            return MemberwiseClone(); // Płytka kopia (Shallow Copy)
+
+            // TODO: dodać przykład głębokiej kopii (Deep Copy)
+            // https://github.com/AlenToma/FastDeepCloner/blob/master/Documentations/Clone.md
         }
     }
 
