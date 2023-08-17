@@ -6,6 +6,42 @@ using System.Threading.Tasks;
 
 namespace BuilderPattern
 {
+    // Abstract Builder
+    public interface IPresentationBuilder
+    {
+        void AddSlide(Slide slide);
+
+    }
+
+    // Concrete Builder
+    public class PdfPresentationBuilder : IPresentationBuilder
+    {
+        private PdfDocument pdf = new PdfDocument();
+        public void AddSlide(Slide slide)
+        {
+            pdf.AddPage(slide.Text);
+        }
+
+        public PdfDocument GetPdfDocument()
+        {
+            return pdf;
+        }
+    }
+
+    public class MoviePresentationBuilder : IPresentationBuilder
+    {
+        private Movie movie = new Movie();
+        public void AddSlide(Slide slide)
+        {
+            movie.AddFrame(slide.Text, 3);
+        }
+
+        public Movie GetMovie()
+        {
+            return movie;
+        }
+    }
+
     public class Slide
     {
         public string Text { get; }
@@ -16,8 +52,16 @@ namespace BuilderPattern
         }
     }
 
+    // Director (nadzorca)
     public class Presentation
     {
+        private IPresentationBuilder builder;
+
+        public Presentation(IPresentationBuilder builder)
+        {
+            this.builder = builder;
+        }
+
         private List<Slide> slides = new List<Slide>();
 
         public void AddSlide(Slide slide)
@@ -25,26 +69,14 @@ namespace BuilderPattern
             slides.Add(slide);
         }
 
-        public void Export(PresentationFormat format)
+        public void Export()
         {
-            if (format == PresentationFormat.PDF)
-            {
-                var pdf = new PdfDocument();
-                pdf.AddPage("Copyright");
+            builder.AddSlide(new Slide("Copyright"));
+
                 foreach(Slide slide in slides)
                 {
-                    pdf.AddPage(slide.Text);
-                }                
-            }
-            else if (format == PresentationFormat.Movie)
-            {
-                var movie = new Movie();
-                movie.AddFrame("Copyright", 3);
-                foreach (Slide slide in slides)
-                {
-                    movie.AddFrame(slide.Text, 3);
-                }
-            }
+                    builder.AddSlide(slide);
+                }                            
         }
     }
 

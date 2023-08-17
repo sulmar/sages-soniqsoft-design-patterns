@@ -19,6 +19,17 @@ namespace BuilderPattern
             SalesReportTest();
 
             // PersonTest();
+
+            BuildPresentationTest();
+        }
+
+        private static void BuildPresentationTest()
+        {
+            var builder = new PdfPresentationBuilder();
+            var presentation = new Presentation(builder);
+            presentation.Export();
+
+            var pdf = builder.GetPdfDocument();
         }
 
         private static void PersonTest()
@@ -39,20 +50,60 @@ namespace BuilderPattern
             FakeOrdersService ordersService = new FakeOrdersService();
             IEnumerable<Order> orders = ordersService.Get();
 
-            SalesReport salesReport = new SalesReport();
+            SalesReportBuilder salesReportBuilder = new SalesReportBuilder(orders);
 
-            // Header
-            salesReport.Title = "Raport sprzedaży";
-            salesReport.CreateDate = DateTime.Now;
-            salesReport.TotalSalesAmount = orders.Sum(s => s.Amount);
 
-            // Content          
-            salesReport.ProductDetails = orders
-                .SelectMany(o => o.Details)
-                .GroupBy(o => o.Product)
-                .Select(g => new ProductReportDetail(g.Key, g.Sum(p => p.Quantity), g.Sum(p => p.LineTotal)));
+            bool hasHeader = true;
 
-            // Footer
+            if (hasHeader)
+            {
+                salesReportBuilder.AddHeader();
+            }
+            salesReportBuilder.AddContent();
+            salesReportBuilder.AddFooter();
+
+            SalesReport salesReport = salesReportBuilder.Build();
+
+            Console.WriteLine(salesReport);
+
+        }
+
+        private static void SmartFluentSalesReportTest()
+        {
+            FakeOrdersService ordersService = new FakeOrdersService();
+            IEnumerable<Order> orders = ordersService.Get();
+
+            ISalesReportBuilder salesReportBuilder = new SmartFluentSalesReportBuilder(orders);
+
+            bool hasHeader = true;
+
+            salesReportBuilder.Instance
+                .AddHeader()
+                .AddContent()
+                .AddFooter();
+
+            SalesReport salesReport = salesReportBuilder.Build();
+
+            Console.WriteLine(salesReport);
+
+        }
+
+        private static void FluentSalesReportTest()
+        {
+            FakeOrdersService ordersService = new FakeOrdersService();
+            IEnumerable<Order> orders = ordersService.Get();
+
+            FluentSalesReportBuilder salesReportBuilder = new FluentSalesReportBuilder(orders);
+
+            bool hasHeader = true;
+
+            salesReportBuilder
+                .AddHeader()
+                .AddContent()
+                .AddFooter()
+                .AddHeader();
+
+            SalesReport salesReport = salesReportBuilder.Build();
 
             Console.WriteLine(salesReport);
 
