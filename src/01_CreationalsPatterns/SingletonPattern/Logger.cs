@@ -3,10 +3,14 @@ using System.IO;
 
 namespace SingletonPattern
 {
-    public class Logger
+    public class Logger : Singleton<Logger>
     {
         private readonly string path = "log.txt";
 
+        public Logger()
+        {
+                
+        }
         public void LogInformation(string message)
         {
             using StreamWriter sw = File.AppendText(path);
