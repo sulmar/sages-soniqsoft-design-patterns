@@ -5,6 +5,72 @@ using System.Threading.Tasks;
 
 namespace DecoratorPattern
 {
+    // Abstract Component
+    public abstract class File
+    {
+        public string Content { get; set; }
+
+        public abstract void Process();
+    }
+
+    // Concrete Component
+    public class CsvFile : File
+    {
+        public override void Process()
+        {
+            
+        }
+    }
+
+    public abstract class FileDecorator : File
+    {
+        protected File file;
+
+        protected FileDecorator(File file)
+        {
+            this.file = file;
+        }
+
+        public override void Process()
+        {
+            if (file != null)
+            {
+                this.file.Process();
+            }
+        }
+
+
+    }
+
+    public class CompressFileDecorator : FileDecorator
+    {
+        public CompressFileDecorator(File file) : base(file)
+        {
+        }
+
+        public override void Process()
+        {
+            file.Content += "!";
+
+            base.Process();
+        }
+    }
+
+    public class EncryptFileDecorator : FileDecorator
+    {
+        public EncryptFileDecorator(File file) : base(file)
+        {
+        }
+
+        public override void Process()
+        {
+            file.Content = "!^%#$##$#$#$#";
+
+            base.Process();
+        }
+    }
+
+
     // Kalkulator płacowy 
     // Premia za nadgodziny
     // Premia za oddanie każdego projektu
@@ -12,13 +78,9 @@ namespace DecoratorPattern
 
     public class SalaryCalculator
     {
-        private readonly decimal amountPerHour;
-        private readonly decimal bonusPerProject;
-
-        public SalaryCalculator(decimal amountPerHour, decimal bonusPerProject)
+        public SalaryCalculator()
         {
-            this.amountPerHour = amountPerHour;
-            this.bonusPerProject = bonusPerProject;
+            
         }
 
         public decimal CalculateSalary(Employee employee)
@@ -27,13 +89,16 @@ namespace DecoratorPattern
             decimal salary = employee.GetSalary();
 
             // premia za nadgodziny
-            salary += (decimal) employee.OvertimeSalary.TotalHours * amountPerHour;
+           // salary += (decimal) employee.OvertimeSalary.TotalHours * amountPerHour;
+
 
             // premia za oddanie każdego projektu
-            for (int i = 0; i < employee.NumberOfProjects; i++)
-            {
-                salary += bonusPerProject;
-            }
+            //for (int i = 0; i < employee.NumberOfProjects; i++)
+            //{
+            //    salary += bonusPerProject;
+            //}
+
+            
 
             // premia za udział w szkoleniu
             // etc. ...

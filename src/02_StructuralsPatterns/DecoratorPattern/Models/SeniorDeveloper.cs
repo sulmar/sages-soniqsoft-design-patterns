@@ -1,5 +1,6 @@
 ﻿namespace DecoratorPattern
 {
+    // Concrete Component B
     public class SeniorDeveloper : Employee
     {
         

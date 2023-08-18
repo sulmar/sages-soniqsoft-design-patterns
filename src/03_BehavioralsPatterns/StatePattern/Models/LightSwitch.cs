@@ -2,39 +2,54 @@
 
 namespace StatePattern
 {
+    // Abstract State
+    public interface LightSwitchState
+    {
+        // Handle
+        void Push(LightSwitch lightSwitch);
+    }
+
+    public class On : LightSwitchState
+    {
+        public void Push(LightSwitch lightSwitch)
+        {
+            lightSwitch.SetState(new Off());
+        }
+    }
+
+    public class Off : LightSwitchState
+    {
+        public void Push(LightSwitch lightSwitch)
+        {
+            lightSwitch.SetState(new On());
+        }
+    }
+
+
     public class LightSwitch
     {
-        public LightSwitchState State { get; set; }
+        public LightSwitchState State { get; private set; }
 
         public LightSwitch()
         {
-            State = LightSwitchState.Off;
+            SetState(new On());
+        }
+
+        public void SetState(LightSwitchState state)
+        {
+            State = state;
         }
 
         public void Push()
         {
-            if (State == LightSwitchState.Off)
-            {
-                Console.WriteLine("załącz przekaźnik");
-
-                State = LightSwitchState.On;
-                return;
-            }
-
-            if (State == LightSwitchState.On)
-            {
-                Console.WriteLine("wyłącz przekaźnik");
-
-                State = LightSwitchState.Off;
-                return;
-            }
+            State.Push(this);   
         }
     }
 
-    public enum LightSwitchState
-    {
-        On,
-        Off
-    }
+    //public enum LightSwitchState
+    //{
+    //    On,
+    //    Off
+    //}
 
 }

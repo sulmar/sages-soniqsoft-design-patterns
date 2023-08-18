@@ -3,6 +3,7 @@ using System;
 
 namespace DecoratorPattern.UnitTests
 {
+
     [TestClass]
     public class SalaryCalculatorTests
     { 
@@ -11,7 +12,7 @@ namespace DecoratorPattern.UnitTests
         public void CalculateSalary_Junior_ShouldCalculateBonus()
         {
             // Arrange
-            SalaryCalculator salaryCalculator = new SalaryCalculator(50, 1000);
+            SalaryCalculator salaryCalculator = new SalaryCalculator();
 
             Employee employee = new JuniorDeveloper { OvertimeSalary = TimeSpan.FromHours(2), NumberOfProjects = 1};
 
@@ -26,7 +27,7 @@ namespace DecoratorPattern.UnitTests
         public void CalculateSalary_Senior_ShouldCalculateBonus()
         {
             // Arrange
-            SalaryCalculator salaryCalculator = new SalaryCalculator(50, 1000);
+            SalaryCalculator salaryCalculator = new SalaryCalculator();
 
             Employee employee = new SeniorDeveloper { OvertimeSalary = TimeSpan.FromHours(2), NumberOfProjects = 2 };
 
