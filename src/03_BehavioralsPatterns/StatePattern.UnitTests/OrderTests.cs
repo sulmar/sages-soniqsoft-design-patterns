@@ -5,6 +5,7 @@ using Xunit;
 
 namespace StatePattern.UnitTests
 {
+
     public class OrderTests
     {
         [Fact]
