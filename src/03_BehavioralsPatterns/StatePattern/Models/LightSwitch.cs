@@ -1,38 +1,18 @@
 ﻿using System;
+using StatePattern.LightSwitchStates;
 
 namespace StatePattern
 {
-    // Abstract State
-    public interface LightSwitchState
-    {
-        // Handle
-        void Push(LightSwitch lightSwitch);
-    }
 
-    public class On : LightSwitchState
-    {
-        public void Push(LightSwitch lightSwitch)
-        {
-            lightSwitch.SetState(new Off());
-        }
-    }
-
-    public class Off : LightSwitchState
-    {
-        public void Push(LightSwitch lightSwitch)
-        {
-            lightSwitch.SetState(new On());
-        }
-    }
-
-
+    // Context
     public class LightSwitch
     {
+        // State
         public LightSwitchState State { get; private set; }
 
         public LightSwitch()
         {
-            SetState(new On());
+            SetState(new Off(this)); // Set Initial State
         }
 
         public void SetState(LightSwitchState state)
@@ -42,14 +22,10 @@ namespace StatePattern
 
         public void Push()
         {
-            State.Push(this);   
+            State.Push();   
         }
     }
 
-    //public enum LightSwitchState
-    //{
-    //    On,
-    //    Off
-    //}
+   
 
 }
