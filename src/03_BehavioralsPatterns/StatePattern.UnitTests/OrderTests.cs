@@ -17,13 +17,40 @@ namespace StatePattern.UnitTests
             var result = order.Status;
 
             // Assert
-            result.Should().Be(OrderStatus.Pending);
+            result.Should().Be(OrderStatus.Placement);
 
         }
 
+        [Fact]
+        public void Confirm_NotPaid_ShouldBePlacement()
+        {
+            // Arrange
+            Order order = new Order();
+
+            // Act
+            order.Confirm();
+
+            // Assert
+            order.Status.Should().Be(OrderStatus.Placement);
+        }
+
+        [Fact]
+        public void Confirm_Paid_ShouldBePicking()
+        {
+            // Arrange
+            Order order = new Order();
+            order.Paid();
+
+            // Act
+            order.Confirm();
+
+            // Assert
+            order.Status.Should().Be(OrderStatus.Picking);
+        }
+
         [Theory]
-        [InlineData(OrderStatus.Pending, OrderStatus.Sent)]        
-        [InlineData(OrderStatus.Sent, OrderStatus.Delivered)]
+        [InlineData(OrderStatus.Picking, OrderStatus.Shipping)]
+        [InlineData(OrderStatus.Shipping, OrderStatus.Delivered)]
         [InlineData(OrderStatus.Delivered, OrderStatus.Completed)]
         public void Confirm_WhenSourceStatus_ShouldBeStatus(OrderStatus sourceStatus, OrderStatus expected)
         {
@@ -38,8 +65,8 @@ namespace StatePattern.UnitTests
         }
 
         [Theory]
-        [InlineData(OrderStatus.Pending, OrderStatus.Cancelled)]
-        [InlineData(OrderStatus.Delivered, OrderStatus.Cancelled)]
+        [InlineData(OrderStatus.Placement, OrderStatus.Canceled)]
+        [InlineData(OrderStatus.Delivered, OrderStatus.Canceled)]
         public void Cancel_WhenSourceStatus_ShouldBeStatus(OrderStatus sourceStatus, OrderStatus expected)
         {
             // Arrange        
@@ -56,7 +83,7 @@ namespace StatePattern.UnitTests
         public void Cancel_WhenSentStatus_ShouldThrowInvalidOperationException()
         {
             // Arrange        
-            Order order = new Order(OrderStatus.Sent);
+            Order order = new Order(OrderStatus.Shipping);
 
             // Act
             var act = () => order.Cancel();
@@ -81,8 +108,8 @@ namespace StatePattern.UnitTests
 
 
         [Theory]
-        [InlineData(OrderStatus.Pending, true)]
-        [InlineData(OrderStatus.Sent, true)]
+        [InlineData(OrderStatus.Placement, true)]
+        [InlineData(OrderStatus.Shipping, true)]
         [InlineData(OrderStatus.Delivered, true)]
         [InlineData(OrderStatus.Completed, false)]
         public void CanConfirm_WhenStatus_ShouldBe(OrderStatus sourceStatus, bool expected)
