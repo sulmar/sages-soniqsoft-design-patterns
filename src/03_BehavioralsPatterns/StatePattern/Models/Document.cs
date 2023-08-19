@@ -15,6 +15,11 @@ namespace StatePattern.Models
     {
         public DocumentState State { get; private set; }    
 
+        public void ChangeState(DocumentState state)
+        {
+            State = state;
+        }
+
         public void Publish()
         {
             switch (State)
