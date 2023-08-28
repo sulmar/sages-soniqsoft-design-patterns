@@ -2,26 +2,7 @@
 
 namespace TemplateMethodPattern
 {
-    public abstract class OrderCalculator
-    {
-        protected abstract bool CanDiscount(Order order);
-        protected abstract decimal GetDiscount(Order order);
-        protected virtual decimal GetNoDiscount()
-        {
-            return 0;
-        }
 
-        public decimal CalculateDiscount(Order order)
-        {
-            if (CanDiscount(order)) // Predicate Warunek promocji
-            {
-                return GetDiscount(order);
-            }
-            else
-                return GetNoDiscount();
-        }
-    }
-        
 
 
     // Happy Hours - 10% upustu w godzinach od 8:30 do 15
@@ -40,23 +21,6 @@ namespace TemplateMethodPattern
         }
 
         protected override bool CanDiscount(Order order) => order.OrderDate.TimeOfDay >= from && order.OrderDate.TimeOfDay < to;
-        protected override decimal GetDiscount(Order order) => order.Amount * percentage;
-    }
-
-
-    public class SpecialDayPercentageOrderCalculator : OrderCalculator
-    {
-        private readonly DateTime specialDay;
-
-        private readonly decimal percentage;
-
-        public SpecialDayPercentageOrderCalculator(DateTime specialDay, decimal percentage)
-        {
-            this.specialDay = specialDay;
-            this.percentage = percentage;
-        }
-
-        protected override bool CanDiscount(Order order) => order.OrderDate == specialDay;
         protected override decimal GetDiscount(Order order) => order.Amount * percentage;
     }
 
