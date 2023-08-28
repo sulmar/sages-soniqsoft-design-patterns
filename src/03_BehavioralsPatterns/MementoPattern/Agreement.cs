@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MementoPattern.Problem
+namespace MementoPattern
 {
     public class Agreement
     {

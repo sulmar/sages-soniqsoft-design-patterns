@@ -1,5 +1,4 @@
 ﻿using MementoPattern.Exercise;
-using MementoPattern.Problem;
 using System;
 
 namespace MementoPattern
