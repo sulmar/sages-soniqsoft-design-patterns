@@ -1,34 +1,36 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrategyPattern.UnitTests
 {
     [TestClass]
-    public class HappyHoursPercentageOrderCalculatorTests
+    public class HappyHoursCanDiscountStrategyTests
     {
-        private HappyHoursPercentageOrderCalculator calculator;
+        private ICanDiscountStrategy strategy;
+        private Order order;
+
+        private readonly TimeSpan from = TimeSpan.Parse("09:00");
+        private readonly TimeSpan to = TimeSpan.Parse("15:00");
 
         [TestInitialize]
         public void Init()
         {
-            calculator = new HappyHoursPercentageOrderCalculator(TimeSpan.Parse("09:00"), TimeSpan.Parse("15:00"), 0.1m);
+            order = new Order(DateTime.MinValue, new Customer(), 100);
+
+            strategy = new HappyHoursCanDiscountStrategy(from, to);
         }
 
         [TestMethod]
         public void CalculateDiscount_DuringHappyHours_ShouldDiscount()
         {
             // Arrange
-            Order order = new Order(DateTime.Parse("2020-06-12 14:59"), new Customer(), 100);
+            order.OrderDate = DateTime.Parse("2020-06-12 14:59");
 
             // Act
-            decimal discount = calculator.CalculateDiscount(order);
+            var result = strategy.CanDiscount(order);
 
             // Assert
-            Assert.AreEqual(10, discount);
+            Assert.IsTrue(result);
 
         }
 
@@ -36,26 +38,26 @@ namespace StrategyPattern.UnitTests
         public void CalculateDiscount_BeforeHappyHours_ShouldNotDiscount()
         {
             // Arrange
-            Order order = new Order(DateTime.Parse("2020-06-12 08:59"), new Customer(), 100);
+            order.OrderDate = DateTime.Parse("2020-06-12 08:59");
 
             // Act
-            decimal discount = calculator.CalculateDiscount(order);
+            var result = strategy.CanDiscount(order);
 
             // Assert
-            Assert.AreEqual(0, discount);
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
         public void CalculateDiscount_AfterHappyHours_ShouldNotDiscount()
         {
             // Arrange
-            Order order = new Order(DateTime.Parse("2020-06-12 15:01"), new Customer(), 100);
+            order.OrderDate = DateTime.Parse("2020-06-12 15:01");
 
             // Act
-            decimal discount = calculator.CalculateDiscount(order);
+            var result = strategy.CanDiscount(order);
 
             // Assert
-            Assert.AreEqual(0, discount);
+            Assert.IsFalse(result);
         }
     }
 }
