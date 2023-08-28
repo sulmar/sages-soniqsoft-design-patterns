@@ -1,5 +1,4 @@
 ﻿using MementoPattern.Exercise;
-using MementoPattern.Problem;
 using System;
 
 namespace MementoPattern
@@ -17,12 +16,34 @@ namespace MementoPattern
 
         private static void ArticleTest()
         {
+            IArticleCaretaker articleCaretaker = new StackArticleCaretaker();
+
             var article = new Article();
             article.Content = "a";
+            Console.WriteLine(article);
+            articleCaretaker.SetState(article.CreateMemento());
+
             article.Content = "b";
+            Console.WriteLine(article);
+            articleCaretaker.SetState(article.CreateMemento());
+
             article.Content = "c";
-            
-            // TODO: Undo
+            Console.WriteLine(article);
+            articleCaretaker.SetState(article.CreateMemento());
+
+            foreach (var memento in articleCaretaker.History)
+            {
+                Console.WriteLine(memento);
+            }
+
+            article.SetMemento(articleCaretaker.GetState());
+            Console.WriteLine(article);
+
+            article.SetMemento(articleCaretaker.GetState());
+            Console.WriteLine(article);
+
+            article.SetMemento(articleCaretaker.GetState());
+            Console.WriteLine(article);
         }
 
         private static void AgreementTest()
