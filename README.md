@@ -1,35 +1,16 @@
 # Wzorce Projektowe w C#
-## Creationals Patterns
-### Singleton Pattern
-Zapewnienie jednej instacji obiektu w całej aplikacji.
 
-### Builder Pattern
-Tworzenie obiektu w kilku krokach.
+## Introduction
 
-### Factory Method
-Tworzenie obiektu za pomocą metod zamiast konstruktora.
+Welcome! This is the course repository for Design Pattern in C#
 
-### Prototype pattern
-Tworzenie obiektu na podstawie innego obiektu.
+To take this course you'll need the following.
 
-## Structurals Patterns
-### Adapter Pattern
-### Facade Pattern
-### Bridge Pattern
-### Decorator Pattern
-### Flyweight Pattern
-### Proxy Pattern
+1. The [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0).
+2. Clone this git repository from GitHub.
 
-## Behaviorals Patterns
-### Chain of Responsibility Pattern
-### Command Pattern
-### Strategy Pattern
-### Template Method Pattern
-### Visitor Pattern
-### State Pattern
-### Mediator Pattern
-### Observer Pattern
-### Interpreter Pattern
+## Clone the Course Git Repository
 
-## Wizualizacja Digraph
-http://www.webgraphviz.com/
+```
+git clone https://github.com/sages-soniqsoft-design-patterns
+```
