@@ -4,21 +4,31 @@ class Program
 {
     static void Main(string[] args)
     {
-        var group1 = new Group();
-        group1.Add(new Shape());
-        group1.Add(new Shape());
+        Console.Write("Are you developer?");
 
-        var group2 = new Group();
-        group2.Add(new Shape()); 
-        group2.Add(new Shape());
+        if (Response)
+        {
 
-        var group = new Group();
-        group.Add(group1);
-        group.Add(group2);
-        
-        group.Render();
+            Console.Write("Do you know C#?");
+
+            if (Response)
+            {
+                Console.WriteLine("Welcome on Design Pattern in C# Course!");
+            }
+            else
+            {
+                Console.WriteLine("The Course is not for you.");
+            }
+
+        }
+        else
+        {
+            Console.WriteLine("Have a nice day.");
+        }
 
 
     }
-    
+
+    public static bool Response => Console.ReadKey().Key == ConsoleKey.Y;
+
 }
