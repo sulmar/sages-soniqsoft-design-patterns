@@ -1,4 +1,6 @@
-﻿Console.WriteLine("Hello Flyweight Pattern!");
+﻿using System.Collections.Generic;
+
+Console.WriteLine("Hello Flyweight Pattern!");
 
 PointService pointService = new PointService();
 
@@ -29,13 +31,13 @@ public class PointService
 {
     private readonly IEnumerable<Point> points;
 
-    public PointService()
+    public PointService(PointIconFactory pointIconFactory)
     {
         points = new List<Point>
          {
-             new Point(10, 20, new PointIcon(PointType.Cafe, File.ReadAllBytes("coffee.png"))),
-             new Point(20, 40, new PointIcon(PointType.Cafe, File.ReadAllBytes("coffee.png"))),
-             new Point(25, 35, new PointIcon(PointType.Hotel, File.ReadAllBytes("hotel.png"))),
+             new Point(10, 20, pointIconFactory.Get(PointType.Cafe),
+             new Point(20, 40, pointIconFactory.Get(PointType.Cafe),
+             new Point(25, 35, pointIconFactory.Get(PointType.Hotel),
          };        
     }
 
@@ -61,4 +63,25 @@ public enum PointType
 {
     Cafe,
     Hotel
+}
+
+// Flyweight Factory
+public class PointIconFactory
+{
+    private readonly Dictionary<PointType, PointIcon> icons = new();
+
+    public PointIcon Get(PointType type)
+    {
+        if (!icons.ContainsKey(type))
+        {
+            string filename = $"{type}.png".ToLower();
+            var icon = new PointIcon(type, File.ReadAllBytes(filename);
+            // cafe.png
+            // hotel.png
+
+            icons.Add(type, icon);
+        }
+
+        return icons[type];
+    }
 }
