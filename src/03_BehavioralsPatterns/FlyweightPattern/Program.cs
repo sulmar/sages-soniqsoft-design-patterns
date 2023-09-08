@@ -32,14 +32,14 @@ public class PointService
 {
     private readonly IEnumerable<Point> points;
 
-    public PointService(PointIconFactory pointIconFactory)
+    public PointService()
     {
         points = new List<Point>
          {
-             new Point(10, 20, pointIconFactory.Get(PointType.Cafe)),
-             new Point(20, 40, pointIconFactory.Get(PointType.Cafe)),
-             new Point(25, 35, pointIconFactory.Get(PointType.Hotel)),
-         };        
+            new Point(10, 20, new PointIcon(PointType.Cafe, File.ReadAllBytes("cafe.png"))),
+            new Point(20, 40, new PointIcon(PointType.Cafe, File.ReadAllBytes("cafe.png"))),
+            new Point(25, 35, new PointIcon(PointType.Hotel, File.ReadAllBytes("hotel.png"))),
+         };
     }
 
     public IEnumerable<Point> GetAll()
@@ -66,23 +66,3 @@ public enum PointType
     Hotel
 }
 
-// Flyweight Factory
-public class PointIconFactory
-{
-    private readonly Dictionary<PointType, PointIcon> icons = new();
-
-    public PointIcon Get(PointType type)
-    {
-        if (!icons.ContainsKey(type))
-        {
-            string filename = $"{type}.png".ToLower();
-            var icon = new PointIcon(type, File.ReadAllBytes(filename);
-            // cafe.png
-            // hotel.png
-
-            icons.Add(type, icon);
-        }
-
-        return icons[type];
-    }
-}
