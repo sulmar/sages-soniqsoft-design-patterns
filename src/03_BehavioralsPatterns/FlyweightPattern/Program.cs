@@ -35,9 +35,9 @@ public class PointService
     {
         points = new List<Point>
          {
-             new Point(10, 20, pointIconFactory.Get(PointType.Cafe),
-             new Point(20, 40, pointIconFactory.Get(PointType.Cafe),
-             new Point(25, 35, pointIconFactory.Get(PointType.Hotel),
+             new Point(10, 20, pointIconFactory.Get(PointType.Cafe)),
+             new Point(20, 40, pointIconFactory.Get(PointType.Cafe)),
+             new Point(25, 35, pointIconFactory.Get(PointType.Hotel)),
          };        
     }
 
