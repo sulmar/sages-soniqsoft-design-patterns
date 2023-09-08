@@ -2,7 +2,7 @@
 
 Console.WriteLine("Hello Flyweight Pattern!");
 
-PointService pointService = new PointService();
+PointService pointService = new PointService(new PointIconFactory());
 
 var points = pointService.GetAll();
 
