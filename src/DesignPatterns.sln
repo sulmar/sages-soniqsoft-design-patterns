@@ -81,7 +81,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BridgePattern", "02_Structu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BridgePattern.UnitTests", "02_StructuralsPatterns\BridgePattern.UnitTests\BridgePattern.UnitTests.csproj", "{88E5D701-356C-471F-8A3B-54112C224CE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainOfResponsibilityPattern.UnitTests.UnitTests", "03_BehavioralsPatterns\ChainOfResponsibilityPattern.UnitTests.UnitTests\ChainOfResponsibilityPattern.UnitTests.UnitTests.csproj", "{588DF93F-CCCF-4045-99AA-7E484E98E519}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainOfResponsibilityPattern.UnitTests", "03_BehavioralsPatterns\ChainOfResponsibilityPattern.UnitTests.UnitTests\ChainOfResponsibilityPattern.UnitTests.csproj", "{588DF93F-CCCF-4045-99AA-7E484E98E519}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompositePattern", "02_StructuralsPatterns\CompositePattern\CompositePattern.csproj", "{947300E5-0AEE-4A9B-9EA3-0FC03B53903A}"
 EndProject
