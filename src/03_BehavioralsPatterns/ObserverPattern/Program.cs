@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reactive.Linq;
 using System.Threading;
 
 namespace ObserverPattern
@@ -103,88 +104,105 @@ namespace ObserverPattern
         {
             var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
-            while (true)
-            {
-                float cpu = cpuCounter.NextValue();
+            IObservable<float> source = Observable.Interval(TimeSpan.FromSeconds(1))
+              .Select(p => cpuCounter.NextValue());
 
-                if (cpu < 30)
+            source.Where(cpu => cpu < 30)
+                .Subscribe(cpu =>
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.WriteLine($"CPU {cpu} %");
                     Console.ResetColor();
-                }
-                else
-                if (cpu > 50)
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"CPU {cpu} %");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.WriteLine($"CPU {cpu} %");
-                }
+                });
 
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-            }
+            source.Where(cpu => cpu > 50)
+                .Subscribe(new CpuConsoleObserver(ConsoleColor.Red));
         }
+    }
 
-        #endregion
+    public class CpuConsoleObserver : IObserver<float>
+    {
+        private readonly ConsoleColor color;
 
-        #region WheaterForecast
-
-        public class WheaterForecast
+        public CpuConsoleObserver(ConsoleColor color)
         {
-            private Random random = new Random();
-
-            private int GetTemperature()
-            {
-                return random.Next(-20, 40);
-            }
-
-            private int GetPreasure()
-            {
-                return random.Next(900, 1200);
-            }
-
-
-            private double GetHumidity()
-            {
-                return random.NextDouble();
-            }
-
-            public void GetChanges()
-            {
-                int temperature = GetTemperature();
-                int preasure = GetPreasure();
-                double humidity = GetHumidity();
-
-                DisplayCurrrent(temperature, preasure, humidity);
-                DisplayForecast(temperature, preasure, humidity);
-                DisplayStatistics(temperature, preasure, humidity);
-            }
-
-            private void DisplayCurrrent(int temperature, int preasure, double humidity)
-            {
-                System.Console.WriteLine($"Current Wheather: {temperature}C {preasure}hPa {humidity:P2}");
-            }
-
-            private void DisplayForecast(int temperature, int preasure, double humidity)
-            {
-                System.Console.WriteLine($"Statistics Wheather: {temperature}C {preasure}hPa {humidity:P2}");
-            }
-
-            private void DisplayStatistics(int temperature, int preasure, double humidity)
-            {
-                System.Console.WriteLine($"Statistics Wheather: {temperature}C {preasure}hPa {humidity:P2}");
-            }
-
-
+            this.color = color;
         }
 
-        #endregion
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(float value)
+        {
+            Console.BackgroundColor = color;
+            Console.WriteLine($"CPU {value} %");
+            Console.ResetColor();
+        }
+    }
+
+    #endregion
+
+    #region WheaterForecast
+
+    public class WheaterForecast
+    {
+        private Random random = new Random();
+
+        private int GetTemperature()
+        {
+            return random.Next(-20, 40);
+        }
+
+        private int GetPreasure()
+        {
+            return random.Next(900, 1200);
+        }
+
+
+        private double GetHumidity()
+        {
+            return random.NextDouble();
+        }
+
+        public void GetChanges()
+        {
+            int temperature = GetTemperature();
+            int preasure = GetPreasure();
+            double humidity = GetHumidity();
+
+            DisplayCurrrent(temperature, preasure, humidity);
+            DisplayForecast(temperature, preasure, humidity);
+            DisplayStatistics(temperature, preasure, humidity);
+        }
+
+        private void DisplayCurrrent(int temperature, int preasure, double humidity)
+        {
+            System.Console.WriteLine($"Current Wheather: {temperature}C {preasure}hPa {humidity:P2}");
+        }
+
+        private void DisplayForecast(int temperature, int preasure, double humidity)
+        {
+            System.Console.WriteLine($"Statistics Wheather: {temperature}C {preasure}hPa {humidity:P2}");
+        }
+
+        private void DisplayStatistics(int temperature, int preasure, double humidity)
+        {
+            System.Console.WriteLine($"Statistics Wheather: {temperature}C {preasure}hPa {humidity:P2}");
+        }
+
 
     }
+
+    #endregion
+
+}
 
 
 
