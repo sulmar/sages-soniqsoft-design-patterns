@@ -1,6 +1,7 @@
 ﻿using ChainOfResponsibilityPattern.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using ChainOfResponsibilityPattern.MessageHandlers;
 
 namespace ChainOfResponsibilityPattern.UnitTests.UnitTests
 {
@@ -11,84 +12,85 @@ namespace ChainOfResponsibilityPattern.UnitTests.UnitTests
         public void Handle_SenderFromWhiteListWithOrder_ShouldHandle()
         {
             // Arrange
-            string[] whiteList = new string[] { "john@domain.com", "bob@domain.com" };
+            string[] whiteList = new string[] {"john@domain.com", "bob@domain.com"};
             var messageHandler = new FromWhiteListHandler(whiteList);
 
 
-            Message message = new Message { From = "john@domain.com" };
+            Message message = new Message {From = "john@domain.com"};
 
             // Act
-            var result = messageHandler.Handle(message);
+            messageHandler.Handle(message);
 
             // Assert            
-
-        }
-
-        [TestMethod]
-        [ExpectedExeption(typeof(Exception))]
-        public void Handle_SenderNotFromWhiteListWithOrder_ShouldThrowsException()
-        {
-            // Arrange
-            string[] whiteList = new string[] { "john@domain.com", "bob@domain.com" };
-            var messageHandler = new FromWhiteListHandler(whiteList);
-
-
-            Message message = new Message { From = "a@abc.com" };
-
-            // Act
-            var result = messageHandler.Handle(message);
-
-            // Assert            
-
-        }
-    }
-
-        [TestMethod]
-        public void ProcessMessage_TitleContainsOrder_ShouldByProcess()
-        {
-            // Arrange
-            string[] whiteList = new string[] { "john@domain.com", "bob@domain.com" };
-            MessageProcessor messageProcessor = new MessageProcessor(whiteList);
-            Message message = new Message { From = "john@domain.com", Title = "Order #1", Body = "Lorem ipsum 953-120-45-91" };
-
-            // Act
-            var result = messageProcessor.Process(message);
-
-            // Assert
-            Assert.AreEqual("953-120-45-91", result);
-
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void ProcessMessage_TitleNotContainsOrder_ShouldByProcess()
+        public void Handle_SenderNotFromWhiteListWithOrder_ShouldThrowsException()
         {
             // Arrange
-            string[] whiteList = new string[] { "john@domain.com", "bob@domain.com" };
-            MessageProcessor messageProcessor = new MessageProcessor(whiteList);
-            Message message = new Message { From = "john@domain.com", Title = "a", Body = "Lorem ipsum 953-120-45-91" };
+            string[] whiteList = new string[] {"john@domain.com", "bob@domain.com"};
+            var messageHandler = new FromWhiteListHandler(whiteList);
+
+
+            Message message = new Message {From = "a@abc.com"};
 
             // Act
-            var result = messageProcessor.Process(message);
+            messageHandler.Handle(message);
+
+            // Assert            
+        }
+    }
+    
+    [TestClass]
+    public class TitleContainsHandlerTests
+    {
+        [TestMethod]
+        public void Handle_TitleContainsOrder_ShouldByProcess()
+        {
+            // Arrange
+            var messageHandler = new TitleContainsHandler("Order");
+            
+            Message message = new Message { Title = "Order #1" };
+
+            // Act
+            messageHandler.Handle(message);
 
             // Assert
-
         }
 
         [TestMethod]
-        public void ProcessMessage_BodyContainsValidTaxNumber_ShouldReturnsTaxNumber()
+        [ExpectedException(typeof(Exception))]
+        public void Handle_TitleNotContainsOrder_ShouldThrowException()
         {
             // Arrange
-            string[] whiteList = new string[] { "john@domain.com", "bob@domain.com" };
-            MessageProcessor messageProcessor = new MessageProcessor(whiteList);
-            Message message = new Message { From = "john@domain.com", Title = "Order #1", Body = "Lorem ipsum 953-120-45-91" };
-
+            var messageHandler = new TitleContainsHandler("Order");
+            
+            Message message = new Message { Title = "a" };
+            
             // Act
-            var result = messageProcessor.Process(message);
+            messageHandler.Handle(message);
 
             // Assert
-            Assert.AreEqual("953-120-45-91", result);
+        }
+    }
 
+    [TestClass]
+    public class TaxNumberHandlerTests
+    {
+        [TestMethod]
+        public void Handle_BodyContainsValidTaxNumber_ShouldReturnsTaxNumber()
+        {
+            // Arrange
+            var messageHandler = new TaxNumberHandler();
+            
+            Message message = new Message { Body = "Lorem ipsum 953-120-45-91"};
+
+            // Act
+            messageHandler.Handle(message);
+
+            // Assert
+          
         }
 
         [TestMethod]
@@ -96,30 +98,16 @@ namespace ChainOfResponsibilityPattern.UnitTests.UnitTests
         public void ProcessMessage_BodyContainsInvalidTaxNumber_ShouldReturnsTaxNumber()
         {
             // Arrange
-            string[] whiteList = new string[] { "john@domain.com", "bob@domain.com" };
-            MessageProcessor messageProcessor = new MessageProcessor(whiteList);
-            Message message = new Message { From = "john@domain.com", Title = "Order #1", Body = "Lorem ipsum 000-000-00-000" };
-
+            var messageHandler = new TaxNumberHandler();
+            Message message = new Message { Body = "Lorem ipsum 000-000-00-000"};
+           
             // Act
-            var result = messageProcessor.Process(message);
+            messageHandler.Handle(message);
 
             // Assert
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void ProcessMessage_SenderFromNotWhiteListWithOrder_ShouldNotByProcess()
-        {
-            // Arrange
-            string[] whiteList = new string[] { "john@domain.com", "bob@domain.com" };
-            MessageProcessor messageProcessor = new MessageProcessor(whiteList);
-            Message message = new Message { From = "a@b.pl", Title = "Order #1" };
-
-            // Act
-            messageProcessor.Process(message);
-
-            // Assert
-
-        }
+       
     }
+
+
 }
