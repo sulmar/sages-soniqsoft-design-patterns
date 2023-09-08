@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="coffee.png" />
+    <None Remove="cafe.png" />
     <None Remove="hotel.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="coffee.png">
+    <Content Include="cafe.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="hotel.png">
