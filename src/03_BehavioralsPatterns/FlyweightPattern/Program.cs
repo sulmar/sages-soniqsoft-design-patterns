@@ -75,7 +75,7 @@ public class PointIconFactory
         if (!icons.ContainsKey(type))
         {
             string filename = $"{type}.png".ToLower();
-            var icon = new PointIcon(type, File.ReadAllBytes(filename);
+            var icon = new PointIcon(type, File.ReadAllBytes(filename));
             // cafe.png
             // hotel.png
 
