@@ -1,4 +1,6 @@
-﻿Console.WriteLine("Hello Flyweight Pattern!");
+﻿using System;
+
+Console.WriteLine("Hello Flyweight Pattern!");
 
 PointService pointService = new PointService();
 
@@ -22,7 +24,7 @@ public class Point
         this.Icon = icon;
     }
 
-    public void Draw() => Console.WriteLine($"{Icon.Type} at ({X},{Y})");
+    public void Draw() => Console.WriteLine($"{Icon.Type} at ({X},{Y}) {Icon.Icon.Length} bytes");
 }
 
 public class PointService
