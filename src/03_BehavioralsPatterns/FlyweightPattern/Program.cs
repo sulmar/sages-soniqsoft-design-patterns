@@ -2,7 +2,7 @@
 
 Console.WriteLine("Hello Flyweight Pattern!");
 
-PointService pointService = new PointService();
+PointService pointService = new PointService(new PointIconFactory());
 
 var points = pointService.GetAll();
 
@@ -35,9 +35,9 @@ public class PointService
     {
         points = new List<Point>
          {
-             new Point(10, 20, pointIconFactory.Get(PointType.Cafe),
-             new Point(20, 40, pointIconFactory.Get(PointType.Cafe),
-             new Point(25, 35, pointIconFactory.Get(PointType.Hotel),
+             new Point(10, 20, pointIconFactory.Get(PointType.Cafe)),
+             new Point(20, 40, pointIconFactory.Get(PointType.Cafe)),
+             new Point(25, 35, pointIconFactory.Get(PointType.Hotel)),
          };        
     }
 
@@ -75,7 +75,7 @@ public class PointIconFactory
         if (!icons.ContainsKey(type))
         {
             string filename = $"{type}.png".ToLower();
-            var icon = new PointIcon(type, File.ReadAllBytes(filename);
+            var icon = new PointIcon(type, File.ReadAllBytes(filename));
             // cafe.png
             // hotel.png
 

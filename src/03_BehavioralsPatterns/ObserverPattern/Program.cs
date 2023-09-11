@@ -204,6 +204,3 @@ namespace ObserverPattern
 
 }
 
-
-
-}
