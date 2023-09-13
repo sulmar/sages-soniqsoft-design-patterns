@@ -11,8 +11,15 @@ namespace FlyweightPattern
         static void Main(string[] args)
         {
             Console.WriteLine("Hello Flyweight Pattern!");
-            
-            
+
+            PointService pointFactory = new PointService(new PointIconFactory());
+
+            var points = pointFactory.Create();
+
+            foreach (var point in points)
+            {
+                point.Draw();
+            }
 
             // Game game = new Game(TreeFactory.Create());
             //
