@@ -11,7 +11,7 @@ namespace VisitorPattern
 
             Form form = Get();
 
-            IVisitor visitor = new MarkdownVisitor();
+            IVisitor visitor = new HtmlVisitor();
 
             form.Accept(visitor);
 

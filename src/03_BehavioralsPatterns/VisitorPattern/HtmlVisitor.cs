@@ -6,14 +6,7 @@ namespace VisitorPattern
     public class HtmlVisitor : IVisitor
     {
         private readonly StringBuilder builder = new StringBuilder();
-
-        public HtmlVisitor()
-        {
-            builder.AppendLine("<html>");
-            // builder.AppendLine($"<title>{Title}</title>";);
-
-            builder.AppendLine("<body>");
-        }
+       
 
         public void Visit(Label control)
         {
@@ -33,6 +26,26 @@ namespace VisitorPattern
         public void Visit(Button control)
         {
             builder.AppendLine($"<button><img src='{control.ImageSource}'/>{control.Caption}</button>");
+        }
+
+        public void Visit(Form control)
+        {
+            AppendBeginDocument(control);
+
+            foreach (Control child in control.Body)
+            {
+                child.Accept(this);
+            }
+
+            AppendEndDocument();
+
+        }
+
+        private void AppendBeginDocument(Form control)
+        {
+            builder.AppendLine("<html>");
+            builder.AppendLine($"<title>{control.Title}</title>");
+            builder.AppendLine("<body>");
         }
 
         private void AppendEndDocument()
